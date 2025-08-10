@@ -3,19 +3,6 @@ import path from 'node:path';
 import getCustomPropertiesFromCSSFile from './get-custom-properties-from-css-file.mjs';
 
 /**
- * Get Custom Properties from Object
- */
-
-// function getCustomPropertiesFromObject(object) {
-// 	const mergedObject = Object.assign(
-// 		{},
-// 		Object(object).customProperties,
-// 		Object(object)['custom-properties'],
-// 	);
-// 	return new Map(Object.entries(mergedObject));
-// }
-
-/**
  * Get Custom Properties from Sources
  */
 export default function getCustomPropertiesFromSources(sources, resolver) {
@@ -50,16 +37,9 @@ export default function getCustomPropertiesFromSources(sources, resolver) {
 				return customProperties;
 			}
 
-			console.log(await getCustomPropertiesFromCSSFile(from, resolver));
-
 			return new Map([
 				...(await customProperties),
 				...(await getCustomPropertiesFromCSSFile(from, resolver)),
 			]);
-
-			// return new Map([
-			// 	...(await customProperties),
-			// 	...(await getCustomPropertiesFromObject(await source)),
-			// ]);
 		}, new Map());
 }
