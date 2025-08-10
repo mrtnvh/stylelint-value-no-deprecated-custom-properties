@@ -13,7 +13,7 @@
     "src"
   ],
   "scripts": {
-    "prepublishOnly": "npm test",
+    "prepublishOnly": "npm test && npm run format",
     "test": "npm run lint && node --test index.test.mjs",
     "lint": "eslint src/**/*.mjs *.mjs --cache --ignore-path .gitignore --quiet",
     "format": "prettier src/**/*.mjs *.mjs --check",
