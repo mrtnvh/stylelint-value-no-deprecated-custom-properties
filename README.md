@@ -25,7 +25,7 @@ Add [Stylelint Value No Deprecated Custom Properties] to your [stylelint configu
     "stylelint-value-no-deprecated-custom-properties"
   ],
   "rules": {
-    "csstools/value-no-deprecated-custom-properties": true || null
+    "custom-properties/no-deprecated": true || null
   }
 }
 ```
@@ -35,7 +35,7 @@ Add [Stylelint Value No Deprecated Custom Properties] to your [stylelint configu
 ### true
 
 If the first option is `true`, then [Stylelint Value No Deprecated Custom Properties]
-requires all custom properties to be known, and the following patterns are
+requires all custom properties not to be deprecated, and the following patterns are
 _not_ considered violations:
 
 ```css
@@ -75,6 +75,7 @@ While the following patterns are considered violations:
 
 ```css
 :root {
+  /* @deprecated */
   --brand-color: var(--brand-blue);
 }
 ```
@@ -106,7 +107,7 @@ paths to the plugin.
     "stylelint-value-no-deprecated-custom-properties"
   ],
   "rules": {
-    "csstools/value-no-deprecated-custom-properties": [true, {
+    "custom-properties/no-deprecated": [true, {
       "importFrom": [
         "path/to/file.css", // => :root { --brand-blue: #33f; }
         "path/to/file.json" // => { "custom-properties": { "--brand-blue": "#33f" } }
@@ -127,7 +128,7 @@ Use this option to configure how the rule solve paths of `@import` rules.
     "stylelint-value-no-deprecated-custom-properties"
   ],
   "rules": {
-    "csstools/value-no-deprecated-custom-properties": [true, {
+    "custom-properties/no-deprecated": [true, {
       "resolver": {
         "extensions": [".css"], // => default to [".css"]
         "paths": ["./assets/css", "./static/css"], // => paths to look for files, default to []
@@ -137,13 +138,3 @@ Use this option to configure how the rule solve paths of `@import` rules.
   }
 }
 ```
-
-[discord]: https://discord.gg/bUadyRwkJS
-[discord-badge]: https://shields.io/badge/Discord-5865F2?logo=discord&logoColor=white
-[test-badge]: https://github.com/csstools/stylelint-value-no-deprecated-custom-properties/actions/workflows/test.yml/badge.svg
-[test-url]: https://github.com/csstools/stylelint-value-no-deprecated-custom-properties/actions/workflows/test.yml
-[npm-img]: https://img.shields.io/npm/v/stylelint-value-no-deprecated-custom-properties.svg
-[npm-url]: https://www.npmjs.com/package/stylelint-value-no-deprecated-custom-properties
-[stylelint]: https://github.com/stylelint/stylelint
-[stylelint configuration]: https://stylelint.io/user-guide/configure/
-[Stylelint Value No Deprecated Custom Properties]: https://github.com/csstools/stylelint-value-no-deprecated-custom-properties

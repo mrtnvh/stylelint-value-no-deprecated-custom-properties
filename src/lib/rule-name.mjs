@@ -1,1 +1,1 @@
-export default 'csstools/value-no-deprecated-custom-properties';
+export default 'custom-properties/no-deprecated';

@@ -26,7 +26,7 @@ scope and avoid unrelated commits.
    cd stylelint-value-no-deprecated-custom-properties
 
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream git@github.com:csstools/stylelint-value-no-deprecated-custom-properties.git
+   git remote add upstream git@github.com:mrtnvh/stylelint-value-no-deprecated-custom-properties.git
 
    # Install the tools necessary for testing
    npm install

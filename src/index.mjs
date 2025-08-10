@@ -6,7 +6,7 @@ import messages from './lib/messages.mjs';
 import ruleName from './lib/rule-name.mjs';
 
 const meta = {
-	url: 'https://github.com/csstools/stylelint-value-no-deprecated-custom-properties/blob/main/README.md',
+	url: 'https://github.com/mrtnvh/stylelint-value-no-deprecated-custom-properties/blob/main/README.md',
 };
 
 const ruleFunction = (method, opts) => {
