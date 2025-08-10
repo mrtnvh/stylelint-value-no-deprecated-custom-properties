@@ -1,6 +1,6 @@
 {
   "name": "stylelint-value-no-deprecated-custom-properties",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A stylelint rule to disallow usage of deprecated custom properties",
   "author": "mrtnvh <stylelint-value-no-deprecated-custom-properties@mrtnvh.com>",
   "license": "CC0-1.0",
