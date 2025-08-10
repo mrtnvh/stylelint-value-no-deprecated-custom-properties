@@ -13,11 +13,12 @@
     "src"
   ],
   "scripts": {
-    "prepublishOnly": "npm test && npm run format",
-    "test": "npm run lint && node --test index.test.mjs",
+    "prepublishOnly": "npm test",
+    "test": "npm run format && npm run lint && node --test index.test.mjs",
     "lint": "eslint src/**/*.mjs *.mjs --cache --ignore-path .gitignore --quiet",
     "format": "prettier src/**/*.mjs *.mjs --check",
-    "format:fix": "prettier src/**/*.mjs *.mjs --write"
+    "format:fix": "prettier src/**/*.mjs *.mjs --write",
+    "release": "np"
   },
   "engines": {
     "node": ">=18.12.0"
@@ -29,6 +30,7 @@
   "devDependencies": {
     "eslint": "^8.53.0",
     "eslint-config-dev": "^3.3.1",
+    "np": "^10.2.0",
     "prettier": "^3.6.2",
     "stylelint": "^16.1.0",
     "stylelint-test-rule-node": "^0.2.1"
