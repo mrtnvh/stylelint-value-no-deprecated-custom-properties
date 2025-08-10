@@ -110,7 +110,6 @@ paths to the plugin.
     "custom-properties/no-deprecated": [true, {
       "importFrom": [
         "path/to/file.css", // => :root { --brand-blue: #33f; }
-        "path/to/file.json" // => { "custom-properties": { "--brand-blue": "#33f" } }
       ]
     }]
   }

@@ -22,9 +22,17 @@ const validateValueAST = (ast, { result, customProperties, decl }) => {
 		if (isVarFunction(node)) {
 			const [propertyNode, , ...fallbacks] = node.nodes;
 			const propertyName = propertyNode.value;
+			const customProperty = customProperties.get(propertyName);
 
-			// If propertyName is found in list of customProperties. Valid
-			if (customProperties.has(propertyName)) {
+			// If property is not found in list, do nothing.
+			// Testing is custom property is known is something to be dealt with by a plugin as
+			// https://github.com/csstools/stylelint-value-no-unknown-custom-properties
+			if (!customProperty) {
+				return;
+			}
+
+			// If the custom property is not deprecated, do nothing.
+			if (!customProperty.deprecated) {
 				return;
 			}
 
@@ -40,7 +48,7 @@ const validateValueAST = (ast, { result, customProperties, decl }) => {
 
 			// report deprecated custom properties
 			stylelint.utils.report({
-				message: messages.unexpected(propertyName, decl.prop),
+				message: messages.deprecated(propertyName, decl.prop, customProperty.deprecationComment),
 				node: decl,
 				result,
 				ruleName,

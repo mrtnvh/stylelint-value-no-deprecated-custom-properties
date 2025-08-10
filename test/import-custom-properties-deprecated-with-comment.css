@@ -1,0 +1,4 @@
+:root {
+	/* @deprecated Do not use this custom property */
+	--brand-red: red;
+}

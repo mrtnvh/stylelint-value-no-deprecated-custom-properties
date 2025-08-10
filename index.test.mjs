@@ -34,52 +34,38 @@ describe('Test enabled', () => {
 		{ code: '@import url("./test/import-custom-properties.css") screen; body { color: var(--brand-red); }' },
 		{ code: '@import url("./test/import-custom-properties.css" url-mod); body { color: var(--brand-red); }' },
 		{ code: "@import './test/import-custom-properties.css'; @import './test/import-custom-properties123.css'; body { color: var(--brand-red); }" },
-		{ code: 'color: var(--my-undefined-color, #ffffff);' },
 	];
 	const reject = [
-		{ code: 'body { color: var(--brand-blue); }', message: messages.unexpected('--brand-blue', 'color') },
-		{ code: "@import './test/import-custom-properties123.css'; body { color: var(--brand-red); }", message: messages.unexpected('--brand-red', 'color') },
+		{ code: ':root { /* @deprecated */ --brand-blue: blue; } body { color: var(--brand-blue); }', message: messages.deprecated('--brand-blue', 'color') },
+		{ code: '.selector-with-deprecated { /* @deprecated */ --brand-blue: blue; } body { color: var(--brand-blue); }', message: messages.deprecated('--brand-blue', 'color') },
+		{ code: ':root { /* @deprecated Do not use brand blue */ --brand-blue: blue; } body { color: var(--brand-blue); }', message: messages.deprecated('--brand-blue', 'color', 'Do not use brand blue') },
+		{ code: "@import './test/import-custom-properties-deprecated-with-comment.css'; body { color: var(--brand-red); }", message: messages.deprecated('--brand-red', 'color', 'Do not use this custom property') },
 	];
 	testRule({ plugins: ['.'], ruleName: rule.ruleName, config: true, accept, reject });
 });
 
 describe('Test fallbacks', () => {
 	const accept = [{ code: 'body { color: var(--brand-blue, #33f); }' }];
-	const reject = [{ code: 'body { color: var(--brand-blue, var(--brand-red)); }', message: messages.unexpected('--brand-red', 'color') }];
+	const reject = [{ code: ':root { /* @deprecated */ --brand-red: red; } body { color: var(--brand-blue, var(--brand-red)); }', message: messages.deprecated('--brand-red', 'color') }];
 	testRule({ plugins: ['.'], ruleName: rule.ruleName, config: true, accept, reject });
 });
 
-describe('Test enabled: not var()s', () => {
-	const accept = [{ code: 'body { color: brand-blue; }' }, { code: 'body { color: var(); }' }];
-	testRule({ plugins: ['.'], ruleName: rule.ruleName, config: true, accept });
-});
-
 describe('Test enabled: { importFrom }', () => {
-	describe('object', () => {
-		const config = [true, { importFrom: { customProperties: { '--brand-blue': '#fff' } } }];
-		const accept = [{ code: 'body { color: var(--brand-blue); }' }];
-		const reject = [
-			{ code: 'body { color: var(--brand-blu); }', message: messages.unexpected('--brand-blu', 'color') },
-			{ code: 'body { color: var(--brand-bluez); }', message: messages.unexpected('--brand-bluez', 'color') },
-		];
-		testRule({ plugins: ['.'], ruleName: rule.ruleName, config, accept, reject });
-	});
-
-	describe('files', () => {
-		const config = [true, { importFrom: ['./test/import-custom-properties.json', './test/import-custom-properties.css'] }];
+	describe('CSS files', () => {
+		const config = [true, { importFrom: ['./test/import-custom-properties.css'] }];
 		const accept = [{ code: 'body { background-color: var(--brand-red); background: var(--brand-green); color: var(--brand-blue); }' }];
 		const reject = [
-			{ code: 'body { color: var(--brand-blu); }', message: messages.unexpected('--brand-blu', 'color') },
-			{ code: 'body { color: var(--brand-bluez); }', message: messages.unexpected('--brand-bluez', 'color') },
+			{ code: 'body { color: var(--brand-blu); }', message: messages.deprecated('--brand-blu', 'color') },
+			{ code: 'body { color: var(--brand-bluez); }', message: messages.deprecated('--brand-bluez', 'color') },
 		];
 		testRule({ plugins: ['.'], ruleName: rule.ruleName, config, accept, reject });
 	});
 
-	describe('js', () => {
-		const config = [true, { importFrom: ['./test/dummy-module-package/import-custom-properties.js'] }];
+	describe('Nothing other than CSS files', () => {
 		const accept = [{ code: 'body { border-color: var(--brand-white); }' }];
 		const reject = [];
-		testRule({ plugins: ['.'], ruleName: rule.ruleName, config, accept, reject });
+		testRule({ plugins: ['.'], ruleName: rule.ruleName, config: [true, { importFrom: ['./test/import-custom-properties.js', './test/import-custom-properties.json'] }], accept, reject });
+		testRule({ plugins: ['.'], ruleName: rule.ruleName, config: [true, { importFrom: ['./test/dummy-module-package/import-custom-properties.js'] }], accept, reject });
 		testRule({ plugins: ['.'], ruleName: rule.ruleName, config: [true, { importFrom: ['./test/dummy-package/import-custom-properties.js'] }], accept, reject });
 		testRule({ plugins: ['.'], ruleName: rule.ruleName, config: [true, { importFrom: ['./test/import-custom-properties.cjs'] }], accept, reject });
 		testRule({ plugins: ['.'], ruleName: rule.ruleName, config: [true, { importFrom: ['./test/import-custom-properties.mjs'] }], accept, reject });
@@ -87,8 +73,8 @@ describe('Test enabled: { importFrom }', () => {
 
 	describe('resolver', () => {
 		const config = [true, { resolver: { paths: './test' } }];
-		const accept = [{ code: '@import "import-custom-properties-absolute.css"; body { background-color: var(--brand-red); background: var(--brand-green); }' }];
-		const reject = [];
+		const accept = [{ code: '@import "import-custom-properties-absolute.css"; body { background-color: var(--brand-red); }' }];
+		const reject = [{ code: '@import "import-custom-properties-absolute.css"; body { background: var(--brand-green); }', message: messages.deprecated('--brand-green', 'background') }];
 		testRule({ plugins: ['.'], ruleName: rule.ruleName, config, accept, reject });
 	});
 });

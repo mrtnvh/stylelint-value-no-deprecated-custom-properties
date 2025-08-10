@@ -53,17 +53,39 @@ export default async function getCustomPropertiesFromRoot(root, resolver) {
 			return;
 		}
 
-		const deprecated = false;
+		const deprecated = getDeprecationFromDeclaration(decl);
+		const deprecationComment = getDeprecationCommentFromDeclaration(decl);
 
 		// write the parsed value to the custom property
 		customProperties.set(decl.prop, {
 			value: decl.value,
 			deprecated,
+			deprecationComment,
 		});
 	});
 
 	// return all custom properties, preferring :root properties over html properties
 	return customProperties;
+}
+
+const DEPRECATION_KEY = '@deprecated';
+
+function getDeprecationFromDeclaration(decl) {
+	const previousDecl = decl.prev();
+	return !!(
+		previousDecl &&
+		previousDecl.type === 'comment' &&
+		previousDecl.text.includes(DEPRECATION_KEY)
+	);
+}
+
+function getDeprecationCommentFromDeclaration(decl) {
+	const previousDecl = decl.prev();
+
+	if (getDeprecationFromDeclaration(decl)) {
+		const text = previousDecl.text.replaceAll(DEPRECATION_KEY, '').replaceAll(/^\*? /g, '');
+		return text.length > 0 ? text : undefined;
+	}
 }
 
 function parseImportParams(params) {

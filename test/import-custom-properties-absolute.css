@@ -2,4 +2,7 @@
 
 :root {
 	--brand-red: red;
+
+	/* @deprecated */
+	--brand-green: green;
 }
