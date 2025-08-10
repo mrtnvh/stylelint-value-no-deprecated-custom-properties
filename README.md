@@ -1,6 +1,3 @@
-> [!WARNING]  
-> This is still an experimental plugin. To use at your discretion.
-
 # Stylelint Value No Deprecated Custom Properties
 
 [Stylelint Value No Deprecated Custom Properties] is a [stylelint] rule to disallow usage of
