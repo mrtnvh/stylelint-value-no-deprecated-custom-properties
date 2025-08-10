@@ -1,20 +1,21 @@
-# Stylelint Value No Deprecated Custom Properties
+# stylelint-value-no-deprecated-custom-properties
 
-[Stylelint Value No Deprecated Custom Properties] is a [stylelint] rule to disallow usage of
-deprecated custom properties.
+stylelint-value-no-deprecated-custom-properties is a [stylelint] rule to disallow usage of deprecated custom properties by them with a comment containing `@deprecated`.
+
+Handy for guiding Design System consumers though a deprecation cycle of vanilla CSS custom properties a.k.a Design Tokens in said context.
 
 > [!NOTE]  
-> All credits to the creators and contributors of the [stylelint-value-no-deprecated-custom-properties](https://github.com/csstools/stylelint-value-no-deprecated-custom-properties) plugin, of which this plugin very much relies on.
+> Big shout out to the creators and contributors of the [stylelint-value-no-unknown-custom-properties](https://github.com/csstools/stylelint-value-no-unknown-custom-properties) plugin, of which this plugin reuses quite a lot from 🙌.
 
 ## Usage
 
-Add [stylelint] and [Stylelint Value No Deprecated Custom Properties] to your project.
+Add [stylelint] and stylelint-value-no-deprecated-custom-properties to your project.
 
 ```bash
 npm install stylelint stylelint-value-no-deprecated-custom-properties --save-dev
 ```
 
-Add [Stylelint Value No Deprecated Custom Properties] to your [stylelint configuration].
+Add stylelint-value-no-deprecated-custom-properties to your [stylelint configuration].
 
 ```js
 {
@@ -27,17 +28,21 @@ Add [Stylelint Value No Deprecated Custom Properties] to your [stylelint configu
 }
 ```
 
+To deprecate a custom property, add a comment on the line before starting with `@deprecated` and optionally add a description after `@deprecated` to guide the user to which custom property they should use instead.
+
 ## Options
 
 ### true
 
-If the first option is `true`, then [Stylelint Value No Deprecated Custom Properties]
-requires all custom properties not to be deprecated, and the following patterns are
-_not_ considered violations:
+If the first option is `true`, then stylelint-value-no-deprecated-custom-properties requires all custom properties not to be deprecated.
+
+The following patterns are considered violations:
 
 ```css
 :root {
-  --brand-blue: #33f;
+  /* @deprecated Use --brand-color-new */
+  --brand-color: blue;
+  --brand-color-new: green;
 }
 
 .example {
@@ -45,57 +50,20 @@ _not_ considered violations:
 }
 ```
 
-```css
-.example {
-  color: var(--brand-blue);
-}
-
-.some-other-class {
-  --brand-blue: #33f;
-}
-```
-
-```css
-:root {
-  --brand-blue: #33f;
-  --brand-color: var(--brand-blue);
-}
-```
-
-While the following patterns are considered violations:
-
-```css
-.example {
-  color: var(--brand-blue);
-}
-```
-
-```css
-:root {
-  /* @deprecated */
-  --brand-color: var(--brand-blue);
-}
-```
-
-Custom Properties can be imported using the second option.
+custom properties can be imported using the second option.
 
 ### `null`
 
 If the first option is `null`, then
-[Stylelint Value No Deprecated Custom Properties] does nothing.
+stylelint-value-no-deprecated-custom-properties does nothing.
 
 ---
 
 ### importFrom
 
-When the first option is `true`, then the second option can specify sources
-where Custom Properties should be imported from by using an `importFrom` key.
-These imports might be CSS, JS, and JSON files, functions, and directly passed
-objects.
+When the first option is `true`, then the second option can specify sources where custom properties should be imported from other CSS files by using an `importFrom` key.
 
-The plugin resolves relative paths from the current working directory
-which may not work in monorepos, in which case it is best to pass only absolute
-paths to the plugin.
+The plugin resolves relative paths from the current working directory which may not work in monorepos, in which case it is best to pass only absolute paths to the plugin.
 
 ```js
 // .stylelintrc
@@ -106,7 +74,7 @@ paths to the plugin.
   "rules": {
     "custom-properties/no-deprecated": [true, {
       "importFrom": [
-        "path/to/file.css", // => :root { --brand-blue: #33f; }
+        "path/to/file.css", // => :root { /* @deprecated */ --brand-blue: #33f; }
       ]
     }]
   }
