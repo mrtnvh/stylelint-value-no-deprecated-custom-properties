@@ -1,0 +1,5 @@
+{
+  "name": "dummy-package",
+  "type": "module",
+  "private": true
+}

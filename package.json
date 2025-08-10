@@ -1,0 +1,99 @@
+{
+  "name": "stylelint-value-no-deprecated-custom-properties",
+  "version": "0.1.0",
+  "description": "A stylelint rule to disallow usage of deprecated custom properties",
+  "author": "mrtnvh <stylelint-value-no-deprecated-custom-properties@mrtnvh.com>",
+  "license": "CC0-1.0",
+  "repository": "mrtnvh/stylelint-value-no-deprecated-custom-properties",
+  "homepage": "https://github.com/mrtnvh/stylelint-value-no-deprecated-custom-properties#readme",
+  "bugs": "https://github.com/mrtnvh/stylelint-value-no-deprecated-custom-properties/issues",
+  "type": "module",
+  "main": "src/index.mjs",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "prepublishOnly": "npm test",
+    "test": "npm run lint && node --test index.test.mjs",
+    "lint": "eslint src/**/*.mjs *.mjs --cache --ignore-path .gitignore --quiet",
+    "format": "prettier src/**/*.mjs *.mjs --check",
+    "format:fix": "prettier src/**/*.mjs *.mjs --write"
+  },
+  "engines": {
+    "node": ">=18.12.0"
+  },
+  "dependencies": {
+    "postcss-value-parser": "^4.2.0",
+    "resolve": "^1.22.8"
+  },
+  "devDependencies": {
+    "eslint": "^8.53.0",
+    "eslint-config-dev": "^3.3.1",
+    "prettier": "^3.6.2",
+    "stylelint": "^16.1.0",
+    "stylelint-test-rule-node": "^0.2.1"
+  },
+  "peerDependencies": {
+    "stylelint": ">=16"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 100,
+    "overrides": [
+      {
+        "files": "*.test.mjs",
+        "options": {
+          "printWidth": 250
+        }
+      }
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "node": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+      "comma-dangle": [
+        "error",
+        "always-multiline"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "curly": "error",
+      "brace-style": "error",
+      "indent": [
+        "error",
+        "tab",
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "radix": "error"
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "root": true
+  },
+  "keywords": [
+    "stylelint",
+    "stylelint-plugin",
+    "css",
+    "custom",
+    "properties",
+    "property",
+    "variables",
+    "variable",
+    "vars",
+    "var",
+    "csswg",
+    "w3c",
+    "deprecated"
+  ]
+}
